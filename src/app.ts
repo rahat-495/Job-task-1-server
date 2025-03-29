@@ -3,6 +3,8 @@ import express from "express" ;
 import cors from "cors" ;
 import cookieParser from "cookie-parser";
 import router from "./app/routes";
+import globalErrorHandler from "./app/modules/middlewares/globalErrorHandler";
+import notFound from "./app/modules/middlewares/notFound";
 
 const app = express() ;
 
@@ -15,5 +17,8 @@ app.use('/api/v1' , router) ;
 app.get('/' , async (req , res) => {
     res.json({message : "The second project server are running !" , success : true}) ;
 })
+
+app.use(globalErrorHandler) ;
+app.use(notFound) ;
 
 export default app ;
