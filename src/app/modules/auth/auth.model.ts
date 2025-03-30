@@ -20,6 +20,7 @@ const userSchema = new Schema<TRegisterUser>({
     password : {
         type : String ,
         required : true ,
+        select : 0 ,
     },
 },{
     timestamps : true ,
