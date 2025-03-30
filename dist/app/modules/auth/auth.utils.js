@@ -12,35 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usersModol = void 0;
-const mongoose_1 = require("mongoose");
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const config_1 = __importDefault(require("../../config"));
-const userSchema = new mongoose_1.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    profileImg: {
-        type: String,
-        default: "",
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-}, {
-    timestamps: true,
+exports.createToken = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const createToken = (jwtPayload, secret, expiresIn) => __awaiter(void 0, void 0, void 0, function* () {
+    return jsonwebtoken_1.default.sign(jwtPayload, secret, { expiresIn });
 });
-userSchema.pre("save", function (next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const user = this;
-        user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bcryptSaltRounds));
-        next();
-    });
-});
-exports.usersModol = (0, mongoose_1.model)("user", userSchema);
+exports.createToken = createToken;
