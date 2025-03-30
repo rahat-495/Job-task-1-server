@@ -24,6 +24,14 @@ const registerUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(voi
         (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "User Register Successfully !" });
     }
 }));
+const loginUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield auth_services_1.authServices.loginUser(req.body);
+    res.cookie("refreshToken", result.refreshtoken, { secure: config_1.default.nodeEnv === "production", httpOnly: true, sameSite: "strict", maxAge: 1000 * 60 * 60 * 24 * 365 });
+    if (result) {
+        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "User Login Successfully !" });
+    }
+}));
 exports.authControllers = {
-    registerUser
+    loginUser,
+    registerUser,
 };

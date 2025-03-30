@@ -18,6 +18,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const auth_model_1 = require("./auth.model");
 const auth_utils_1 = require("./auth.utils");
 const config_1 = __importDefault(require("../../config"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const createUserIntoDb = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const isUserAlreadyAxist = yield auth_model_1.usersModol.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email });
     if (isUserAlreadyAxist) {
@@ -32,6 +33,21 @@ const createUserIntoDb = (payload) => __awaiter(void 0, void 0, void 0, function
     const refreshtoken = yield (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwtRefreshSecret, "365d");
     return { accesstoken, refreshtoken };
 });
+const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUserAxist = yield auth_model_1.usersModol.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email }).select("+password");
+    if (!isUserAxist) {
+        throw new AppErrors_1.default(http_status_1.default.NOT_FOUND, "User not found !");
+    }
+    const isPasswordMatch = yield bcrypt_1.default.compare(payload.password, isUserAxist === null || isUserAxist === void 0 ? void 0 : isUserAxist.password);
+    if (!isPasswordMatch) {
+        throw new AppErrors_1.default(http_status_1.default.UNAUTHORIZED, "Password is not match !");
+    }
+    const jwtPayload = { email: isUserAxist === null || isUserAxist === void 0 ? void 0 : isUserAxist.email, name: isUserAxist === null || isUserAxist === void 0 ? void 0 : isUserAxist.name, profileImg: isUserAxist === null || isUserAxist === void 0 ? void 0 : isUserAxist.profileImg };
+    const accesstoken = yield (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwtAccessSecret, config_1.default.jwtAccessSecretTime);
+    const refreshtoken = yield (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwtRefreshSecret, "365d");
+    return { accesstoken, refreshtoken };
+});
 exports.authServices = {
+    loginUser,
     createUserIntoDb,
 };
