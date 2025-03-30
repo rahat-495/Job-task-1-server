@@ -2,7 +2,7 @@
 export type TRegisterUser = {
     name : string ;
     email : string ;
-    profileImg : string ;
+    profileImg ?: string ;
     password : string ;
 }
 
