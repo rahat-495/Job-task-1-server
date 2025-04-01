@@ -21,6 +21,10 @@ const blogSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    summury: {
+        type: String,
+        required: true,
+    },
     author: {
         type: authorSchema,
         required: true,
@@ -44,6 +48,10 @@ const blogSchema = new mongoose_1.Schema({
     publishedDate: {
         type: String,
         required: true,
+    },
+    images: {
+        type: [String],
+        default: [],
     },
 }, {
     timestamps: true,

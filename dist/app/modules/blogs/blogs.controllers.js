@@ -12,10 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogsControllers = void 0;
+exports.blogControllers = void 0;
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const blogs_services_1 = require("./blogs.services");
 const createBlog = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield blogs_services_1.blogServices.createBlogIntoDb(req.body, req.files);
+    if (result) {
+        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Blog created Successfully !" });
+    }
 }));
-exports.blogsControllers = {
+exports.blogControllers = {
     createBlog,
 };
