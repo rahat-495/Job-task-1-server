@@ -1,14 +1,16 @@
 
-type Blog = {
+export type TAuthor = {
+  name : string;
+  email : string;
+  profilePicture ?: string;
+}
+
+export type TBlog = {
     title: string;
     tags: string[];
     description: string;
-    likes: number;
-    views: number;
-    images: string[];
+    likes?: number;
+    views?: number;
     publishedDate: string;
-    author: {
-      name: string;
-      profilePicture: string;
-    };
+    author: TAuthor;
 }
