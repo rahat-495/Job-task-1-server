@@ -22,6 +22,10 @@ const blogSchema = new Schema<TBlog>({
         type : String ,
         required : true ,
     },
+    summury : {
+        type : String ,
+        required : true ,
+    },
     author : {
         type : authorSchema ,
         required : true ,
@@ -45,6 +49,10 @@ const blogSchema = new Schema<TBlog>({
     publishedDate : {
         type : String ,
         required : true ,
+    },
+    images : {
+        type : [String] ,
+        default : [] ,
     },
 },{
     timestamps : true ,
